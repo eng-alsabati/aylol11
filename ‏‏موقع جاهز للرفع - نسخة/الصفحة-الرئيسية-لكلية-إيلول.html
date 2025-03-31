@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>كلية إيلول للعلوم الطبية والتقنية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                fontFamily: {
+                    'sans': ['Tajawal', 'sans-serif'],
+                    'pacifico': ['Pacifico', 'cursive'],
+                    'courgette': ['Courgette', 'cursive']
+                },
+                extend: {
+                    colors: {
+                        primary: '#161139',
+                        secondary: '#F6972C',
+                        accent: '#4F46E5'
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '4px',
+                        DEFAULT: '8px',
+                        'md': '12px',
+                        'lg': '16px',
+                        'xl': '20px',
+                        '2xl': '24px',
+                        '3xl': '32px',
+                        'full': '9999px'
+                    },
+                    boxShadow: {
+                        'card': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                        'card-hover': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :where([class^="ri-"])::before { font-family: "remixicon" !important; font-style: normal; }
+        
+        body {
+            background-color: #FFFFFF;
+            background-image: url('https://static.readdy.ai/image/c18761e14294631cd7c5306e8a51628f/21a620759395aec0719da240bbef7ba3.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 50%;
+            background-attachment: fixed;
+            background-blend-mode: screen;
+            min-height: 100vh;
+        }
+        
+        .hero-overlay {
+            background: linear-gradient(to top, rgba(22, 17, 57, 0.85) 0%, rgba(22, 17, 57, 0.3) 50%, transparent 100%);
+        }
+        
+        .department-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backface-visibility: hidden;
+            transform: translateZ(0);
+            will-change: transform;
+        }
+        
+        .department-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .department-card.active {
+            border: 2px solid #F6972C;
+            box-shadow: 0 0 0 4px rgba(246, 151, 44, 0.2);
+        }
+        
+        .nav-bottom {
+            box-shadow: 0 -2px 10px 0 rgba(0, 0, 0, 0.1);
+        }
+        
+        .social-icon {
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .social-icon:hover {
+            transform: translateY(-3px);
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .designer-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .designer-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        }
+        
+        /* الأنماط الجديدة للعناصر القابلة للطي */
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        
+        .department-card.active .collapsible-content {
+            max-height: 500px;
+            margin-top: 8px;
+        }
+        
+        .collapsible-icon {
+            transition: transform 0.3s ease;
+        }
+        
+        .department-card.active .collapsible-icon {
+            transform: rotate(180deg);
+        }
+        
+        .designer-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        
+        .designer-card.active .designer-details {
+            max-height: 500px;
+            margin-top: 12px;
+        }
+        
+        @media (max-width: 640px) {
+            .department-card {
+                padding: 1rem;
+            }
+            .department-icon {
+                width: 2.5rem;
+                height: 2.5rem;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .department-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .department-grid {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 antialiased">
+    <!-- شريط التنقل العلوي -->
+    <nav class="fixed top-0 inset-x-0 bg-primary text-white shadow-md z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <button class="p-1 rounded-md focus:outline-none focus:ring-2 focus:ring-secondary">
+                    <i class="ri-menu-line text-2xl"></i>
+                </button>
+                
+                <div class="flex items-center space-x-2 space-x-reverse">
+                    <img src="https://static.readdy.ai/image/c18761e14294631cd7c5306e8a51628f/21a620759395aec0719da240bbef7ba3.png" 
+                         alt="شعار الكلية" 
+                         class="h-8 w-8 object-contain opacity-90">
+                    <div class="flex flex-col leading-tight">
+                        <span class="font-pacifico text-xl text-white">A.C.M.T.S</span>
+                        <span class="font-courgette text-xs text-secondary -mt-1">كلية إيلول للعلوم الطبية والتقنية</span>
+                    </div>
+                </div>
+                
+                <button class="p-1 rounded-md focus:outline-none focus:ring-2 focus:ring-secondary">
+                    <i class="ri-notification-3-line text-2xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="pt-20 pb-24">
+        <!-- قسم الهيرو -->
+        <section class="relative">
+            <div class="w-full h-64 md:h-80 overflow-hidden">
+                <img src="123.jpg" 
+                     alt="كلية إيلول للعلوم الطبية والتقنية" 
+                     class="w-full h-full object-cover">
+                <div class="absolute inset-0 hero-overlay"></div>
+                <div class="absolute bottom-6 right-6 text-white">
+                    <h1 class="text-3xl md:text-4xl font-bold mb-1"> كلية إيلول للعلوم الطبية والتقنية</h1>
+                    <p class="text-lg md:text-xl opacity-90">العنوان</p>
+                    <div class="collapsible-content">
+                        <h2>صنعاء، المدينة السكنية سعوان، جولة النصر، خلف بنك الكريمي، مبنى كلية إيلول</h2>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- قسم عن الكلية -->
+        <section class="container mx-auto px-4 py-8">
+            <div class="bg-white rounded-xl shadow-card p-6">
+                <h2 class="text-2xl font-bold text-primary mb-4">عن الكلية</h2>
+                <div class="collapsible-content">
+                    <p class="text-gray-600 leading-relaxed">
+                        نحن مؤسسة تعليمية رائدة في مجال العلوم الطبية والتقنية، نسعى لتخريج كوادر مؤهلة وقادرة على المنافسة في سوق العمل. نقدم برامج أكاديمية متميزة تجمع بين النظرية والتطبيق العملي في بيئة تعليمية محفزة تواكب أحدث التطورات في المجالين الطبي والتقني.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- الأقسام الأكاديمية -->
+        <section class="container mx-auto px-4 py-6">
+            <h2 class="text-2xl font-bold text-primary mb-6 px-2">الأقسام الأكاديمية</h2>
+            
+            <div class="department-grid grid grid-cols-2 gap-4 md:gap-6">
+                <!-- قسم الجرافكس -->
+                <div class="department-card bg-white rounded-xl shadow-card p-4 cursor-pointer">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3 space-x-reverse">
+                            <div class="department-icon w-10 h-10">
+                                <img src="https://public.readdy.ai/ai/img_res/f11a83ee8b44c67e74c86399c07574f1.jpg" 
+                                     alt="قسم الجرافكس" 
+                                     class="w-full h-full object-contain">
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-primary">قسم الجرافكس</h3>
+                                <p class="text-sm text-secondary">تصميم وإبداع رقمي</p>
+                            </div>
+                        </div>
+                        <i class="ri-arrow-down-s-line collapsible-icon"></i>
+                    </div>
+                    <div class="collapsible-content">
+                        <p class="text-xs text-gray-600 mt-2 leading-tight">
+                            تعلم أحدث تقنيات التصميم الجرافيكي وتطوير المهارات الإبداعية في مجال الوسائط المتعددة والتصميم الرقمي
+                        </p>
+                    </div>
+                </div>
+
+                <!-- تكنولوجيا المعلومات -->
+                <div class="department-card bg-white rounded-xl shadow-card p-4 cursor-pointer">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3 space-x-reverse">
+                            <div class="department-icon w-10 h-10">
+                                <img src="https://public.readdy.ai/ai/img_res/591e31c9654eb9779420cabb80c48fc2.jpg" 
+                                     alt="تكنولوجيا المعلومات" 
+                                     class="w-full h-full object-contain">
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-primary">تكنولوجيا المعلومات</h3>
+                                <p class="text-sm text-secondary">برمجة وتطوير</p>
+                            </div>
+                        </div>
+                        <i class="ri-arrow-down-s-line collapsible-icon"></i>
+                    </div>
+                    <div class="collapsible-content">
+                        <p class="text-xs text-gray-600 mt-2 leading-tight">
+                            دراسة أساسيات البرمجة وتطوير التطبيقات وإدارة قواعد البيانات وأمن المعلومات في بيئة تعليمية متطورة
+                        </p>
+                    </div>
+                </div>
+
+                <!-- قسم الصيدلة -->
+                <div class="department-card bg-white rounded-xl shadow-card p-4 cursor-pointer">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3 space-x-reverse">
+                            <div class="department-icon w-10 h-10">
+                                <img src="https://public.readdy.ai/ai/img_res/912bd245e0a28614e670d1e0a1db5f4d.jpg" 
+                                     alt="قسم الصيدلة" 
+                                     class="w-full h-full object-contain">
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-primary">قسم الصيدلة</h3>
+                                <p class="text-sm text-secondary">علوم صيدلانية</p>
+                            </div>
+                        </div>
+                        <i class="ri-arrow-down-s-line collapsible-icon"></i>
+                    </div>
+                    <div class="collapsible-content">
+                        <p class="text-xs text-gray-600 mt-2 leading-tight">
+                            تدريب متخصص في العلوم الصيدلانية وتحضير الأدوية والمستحضرات الطبية مع التركيز على الممارسة العملية
+                        </p>
+                    </div>
+                </div>
+
+                <!-- مساعد طبيب -->
+                <div class="department-card bg-white rounded-xl shadow-card p-4 cursor-pointer">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3 space-x-reverse">
+                            <div class="department-icon w-10 h-10">
+                                <img src="https://public.readdy.ai/ai/img_res/eaa0f750e69713cfa8515ced7a19260f.jpg" 
+                                     alt="مساعد طبيب" 
+                                     class="w-full h-full object-contain">
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-primary">مساعد طبيب</h3>
+                                <p class="text-sm text-secondary">رعاية صحية</p>
+                            </div>
+                        </div>
+                        <i class="ri-arrow-down-s-line collapsible-icon"></i>
+                    </div>
+                    <div class="collapsible-content">
+                        <p class="text-xs text-gray-600 mt-2 leading-tight">
+                            برنامج شامل لتأهيل مساعدي الأطباء في مجالات الرعاية الصحية المختلفة مع تدريب عملي في المستشفيات
+                        </p>
+                    </div>
+                </div>
+
+                <!-- فني عملي -->
+                <div class="department-card bg-white rounded-xl shadow-card p-4 cursor-pointer">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3 space-x-reverse">
+                            <div class="department-icon w-10 h-10">
+                                <img src="https://public.readdy.ai/ai/img_res/cfa1beeffe2845449b6d60730e89c239.jpg" 
+                                     alt="فني عملي" 
+                                     class="w-full h-full object-contain">
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-primary">فني عمليات</h3>
+                                <p class="text-sm text-secondary">غرف عمليات</p>
+                            </div>
+                        </div>
+                        <i class="ri-arrow-down-s-line collapsible-icon"></i>
+                    </div>
+                    <div class="collapsible-content">
+                        <p class="text-xs text-gray-600 mt-2 leading-tight">
+                            تدريب متخصص في تقنيات المختبرات الطبية وإجراء التحاليل المخبرية باستخدام أحدث الأجهزة والمعدات
+                        </p>
+                    </div>
+                </div>
+
+                <!-- قسم قبالة وتوليد -->
+                <div class="department-card bg-white rounded-xl shadow-card p-4 cursor-pointer">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3 space-x-reverse">
+                            <div class="department-icon w-10 h-10">
+                                <img src="https://public.readdy.ai/ai/img_res/11f40ecfc8b5a36547274c32254fe753.jpg" 
+                                     alt="قسم قبالة وتوليد" 
+                                     class="w-full h-full object-contain">
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-primary">قسم قبالة وتوليد</h3>
+                                <p class="text-sm text-secondary">رعاية الأم والطفل</p>
+                            </div>
+                        </div>
+                        <i class="ri-arrow-down-s-line collapsible-icon"></i>
+                    </div>
+                    <div class="collapsible-content">
+                        <p class="text-xs text-gray-600 mt-2 leading-tight">
+                            برنامج متخصص في رعاية الأم والطفل خلال فترة الحمل والولادة وما بعدها، مع تدريب عملي مكثف في المستشفيات ومراكز الأمومة
+                        </p>
+                    </div>
+                </div>
+           
+                <!-- تمريض عالي -->
+                <div class="department-card bg-white rounded-xl shadow-card p-4 cursor-pointer">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3 space-x-reverse">
+                            <div class="department-icon w-10 h-10">
+                                <img src="https://public.readdy.ai/ai/img_res/cfa1beeffe2845449b6d60730e89c239.jpg" 
+                                     alt="تمريض عالي" 
+                                     class="w-full h-full object-contain">
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-primary">تمريض عالي</h3>
+                                <p class="text-sm text-secondary">غرف عمليات</p>
+                            </div>
+                        </div>
+                        <i class="ri-arrow-down-s-line collapsible-icon"></i>
+                    </div>
+                    <div class="collapsible-content">
+                        <p class="text-xs text-gray-600 mt-2 leading-tight">
+                            **قسم التمريض العالي** برنامج لمدة 3 سنوات يؤهل كوادر تمريضية مدربة نظرياً وعملياً. يشمل تدريبات ميدانية في المستشفيات، ويتعلم الطلاب رعاية المرضى، الإسعافات، واستخدام الأجهزة الطبية. يؤهل الخريجين للعمل بالمستشفيات والعيادات، مع فرص للتخصص. يتميز بمجال عمل واسع وطلب متزايد على الخريجين.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- قسم التواصل -->
+        <section class="container mx-auto px-4 py-8">
+            <div class="bg-gradient-to-r from-primary to-accent rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6 md:p-8 text-white">
+                    <h2 class="text-2xl font-bold mb-6 text-center">للتواصل والاستفسار</h2>
+                    
+                    <div class="space-y-4 mb-6">
+                        <div class="flex items-center justify-center space-x-3 space-x-reverse">
+                            <i class="ri-phone-line text-xl"></i>
+                            <p class="text-lg font-medium">771007199</p>
+                        </div>
+                        <div class="flex items-center justify-center space-x-3 space-x-reverse">
+                            <i class="ri-phone-line text-xl"></i>
+                            <p class="text-lg font-medium">771009313</p>
+                        </div>
+                        <div class="flex items-center justify-center space-x-3 space-x-reverse">
+                            <i class="ri-phone-line text-xl"></i>
+                            <p class="text-lg font-medium">771004055</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-center space-x-6 mb-8">
+                        <a href="https://wa.me/+967771007199" class="social-icon bg-green-500 hover:bg-green-600">
+                            <i class="ri-whatsapp-line text-xl"></i>
+                        </a>
+                        <a href="https://www.facebook.com/profile.php?id=100095338051388&mibextid=ZbWKwL" class="social-icon bg-blue-600 hover:bg-blue-700">
+                            <i class="ri-facebook-fill text-xl"></i>
+                        </a>
+                        <a href="https://instagram.com" class="social-icon bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600">
+                            <i class="ri-instagram-line text-xl"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="bg-white/10 rounded-lg p-4">
+                        <div class="flex items-start space-x-3 space-x-reverse mb-3">
+                            <i class="ri-map-pin-2-line text-xl mt-1"></i>
+                            <div>
+                                <h4 class="font-bold mb-1">العنوان</h4>
+                                <div class="collapsible-content">
+                                    <p class="text-sm leading-relaxed">
+                                        صنعاء، المدينة السكنية سعوان، جولة النصر، خلف بنك الكريمي، مبنى كلية إيلول
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <a href="https://maps.app.goo.gl/NQNtwWKKTkwFMJaQ7" class="inline-flex items-center justify-center space-x-2 space-x-reverse bg-white text-primary px-4 py-2 rounded-lg font-medium mt-3 hover:bg-gray-100 transition-colors">
+                            <i class="ri-map-2-line"></i>
+                            <span>عرض على الخريطة</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer مع فريق المصممين -->
+    <footer class="bg-primary text-white py-8">
+        <div class="container mx-auto px-4">
+            <!-- فريق المصممين -->
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold mb-6 text-center text-secondary">فريق التصميم والتطوير</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+                    <!-- مصمم 1 -->
+                    <div class="designer-card">
+                        <div class="flex items-center space-x-4 space-x-reverse">
+                            <div class="w-16 h-16 rounded-full overflow-hidden bg-gray-200">
+                                <img src="4.jpg" alt="أمجد السباتي" class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-primary">أمجد السباتي</h3>
+                                <p class="text-sm text-gray-600">مصمم ومطور واجهات المستخدم</p>
+                            </div>
+                            <i class="ri-arrow-down-s-line collapsible-icon ml-auto"></i>
+                        </div>
+                        <div class="designer-details">
+                            <div class="mt-4 flex justify-center space-x-4">
+                                <a href="https://wa.me/967771900688" class="social-icon bg-green-500 text-white">
+                                    <i class="ri-whatsapp-line text-xl"></i>
+                                </a>
+                                <a href="https://www.facebook.com/share/18DFtHew4f/" class="social-icon bg-blue-600 text-white">
+                                    <i class="ri-facebook-fill text-xl"></i>
+                                </a>
+                                <a href="https://www.instagram.com/amjd_pro?igsh=cjYxdDAzcW40MmMx" class="social-icon bg-pink-600 text-white">
+                                    <i class="ri-instagram-line text-xl"></i>
+                                </a>
+                            </div>
+                            <div class="mt-4 text-center">
+                                <a href="tel:00967771900688" class="text-sm text-gray-700 hover:text-primary transition-colors">
+                                    <i class="ri-phone-line mr-1"></i> +967771900688
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- مصمم 2 -->
+                    <div class="designer-card">
+                        <div class="flex items-center space-x-4 space-x-reverse">
+                            <div class="w-16 h-16 rounded-full overflow-hidden bg-gray-200">
+                                <img src="5.jpg" alt="سعد الراشدي" class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-primary">سعد الراشدي</h3>
+                                <p class="text-sm text-gray-600">مصمم جرافيك وخبير تجربة المستخدم</p>
+                            </div>
+                            <i class="ri-arrow-down-s-line collapsible-icon ml-auto"></i>
+                        </div>
+                        <div class="designer-details">
+                            <div class="mt-4 flex justify-center space-x-4">
+                                <a href="https://wa.me/967779877988" class="social-icon bg-green-500 text-white">
+                                    <i class="ri-whatsapp-line text-xl"></i>
+                                </a>
+                                <a href="https://www.facebook.com/share/1A4HbPcywM/" class="social-icon bg-blue-600 text-white">
+                                    <i class="ri-facebook-fill text-xl"></i>
+                                </a>
+                                <a href="https://www.instagram.com/add_d2005?igsh=enpybDUzemx4bmkx" class="social-icon bg-pink-600 text-white">
+                                    <i class="ri-instagram-line text-xl"></i>
+                                </a>
+                            </div>
+                            <div class="mt-4 text-center">
+                                <a href="tel:00967779877988" class="text-sm text-gray-700 hover:text-primary transition-colors">
+                                    <i class="ri-phone-line mr-1"></i> +967779877988
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- حقوق النشر -->
+            <div class="text-center text-sm text-gray-300 pt-4 border-t border-gray-700">
+                <p>© 2024 كلية إيلول للعلوم الطبية والتقنية. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- شريط التنقل السفلي -->
+    <nav class="nav-bottom fixed bottom-0 inset-x-0 bg-white z-40">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-4">
+                <a href="#" class="flex flex-col items-center justify-center py-3 text-primary">
+                    <i class="ri-home-4-fill text-xl"></i>
+                    <span class="text-xs mt-1">الرئيسية</span>
+                </a>
+                <a href="#" class="flex flex-col items-center justify-center py-3 text-gray-500 hover:text-primary transition-colors">
+                    <i class="ri-book-open-line text-xl"></i>
+                    <span class="text-xs mt-1">الأقسام</span>
+                </a>
+                <a href="#" class="flex flex-col items-center justify-center py-3 text-gray-500 hover:text-primary transition-colors">
+                    <i class="ri-calendar-line text-xl"></i>
+                    <span class="text-xs mt-1">الجدول</span>
+                </a>
+                <a href="#" class="flex flex-col items-center justify-center py-3 text-gray-500 hover:text-primary transition-colors">
+                    <i class="ri-user-line text-xl"></i>
+                    <span class="text-xs mt-1">حسابي</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // متابعة النقر على الأقسام الأكاديمية
+            const departmentCards = document.querySelectorAll('.department-card');
+            departmentCards.forEach(card => {
+                const header = card.querySelector('.flex.items-center.justify-between');
+                header.addEventListener('click', function(e) {
+                    // منع الانتشار إذا كان النقر على رابط داخل الهيدر
+                    if (e.target.tagName === 'A') return;
+                    
+                    // إغلاق جميع البطاقات الأخرى
+                    departmentCards.forEach(c => {
+                        if (c !== card) {
+                            c.classList.remove('active');
+                        }
+                    });
+                    
+                    // تبديل الحالة للبطاقة الحالية
+                    card.classList.toggle('active');
+                });
+            });
+            
+            // متابعة النقر على بطاقات المصممين
+            const designerCards = document.querySelectorAll('.designer-card');
+            designerCards.forEach(card => {
+                const header = card.querySelector('.flex.items-center');
+                header.addEventListener('click', function(e) {
+                    // منع الانتشار إذا كان النقر على رابط داخل الهيدر
+                    if (e.target.tagName === 'A') return;
+                    
+                    // إغلاق جميع البطاقات الأخرى
+                    designerCards.forEach(c => {
+                        if (c !== card) {
+                            c.classList.remove('active');
+                        }
+                    });
+                    
+                    // تبديل الحالة للبطاقة الحالية
+                    card.classList.toggle('active');
+                });
+            });
+            
+            // متابعة النقر على القائمة
+            const menuButton = document.querySelector('.ri-menu-line').parentElement;
+            menuButton.addEventListener('click', function() {
+                alert('سيتم فتح القائمة الجانبية');
+            });
+            
+            // متابعة النقر على الإشعارات
+            const notificationButton = document.querySelector('.ri-notification-3-line').parentElement;
+            notificationButton.addEventListener('click', function() {
+                alert('سيتم فتح صفحة الإشعارات');
+            });
+        });
+    </script>
+</body>
+</html>
